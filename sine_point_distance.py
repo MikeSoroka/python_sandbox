@@ -39,7 +39,8 @@ def find_distance(x, starting_coords):
 x, y = map(float, input("Input point coordinates: ").split())
 if(x < 0):
     x *= -1
-    y *= 1
+    y *= -1
+    
 coords = (x, y)
 
 starting_interval = (nearest_sine_extremumes(coords[0])[0], coords[0] + 1 + abs(coords[1]))
