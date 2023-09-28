@@ -2,7 +2,7 @@ from math import pi as pi
 from math import sin as sin
 from math import cos as cos
 
-def nearest_sine_maxes(x):
+def nearest_sine_extremumes(x):
     whole_minimum = int(x / (pi/2))
     if not whole_minimum % 2:
         whole_minimum -= 1
@@ -12,7 +12,7 @@ def nearest_sine_maxes(x):
 
 
 def convert_to_basis(x):
-    return x - nearest_sine_maxes(x)[0] - pi/2
+    return x - nearest_sine_extremumes(x)[0] - pi/2
 
 
 def derivative(x, starting_coords):
@@ -26,9 +26,7 @@ def search_root(possible_segment, starting_coords):
         return (x1 + x2) / 2
     else:
         current = (x1 + x2) / 2
-        if not derivative(current, starting_coords):
-            return current
-        elif derivative(x1, starting_coords) * derivative(current, starting_coords) <= 0:
+        if derivative(x1, starting_coords) * derivative(current, starting_coords) <= 0:
             return search_root((x1, current), starting_coords)
         else:
             return search_root((current, x2), starting_coords)
@@ -39,6 +37,13 @@ def find_distance(x, starting_coords):
 
 
 x, y = map(float, input("Input point coordinates: ").split())
+if(x < 0):
+    x *= -1
+    y *= 1
 coords = (x, y)
-rez = find_distance(search_root(nearest_sine_maxes(coords[0]), coords), coords)
+
+starting_interval = (nearest_sine_extremumes(coords[0])[0], coords[0] + 1 + abs(coords[1]))
+nearest_point = search_root(starting_interval, coords)
+rez = find_distance(nearest_point, coords)
+
 print(rez)
